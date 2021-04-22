@@ -33,6 +33,13 @@ app.get('/', (request, response) => {
   response.send('<h1>Welcome to phonebook API!</h1>')
 })
 
+app.get('/info', (request, response) => {
+  let html = '';
+  html += `<p>Phonebook has info for ${persons.length} people</p>`
+  html += `<p>${new Date()}</p>`
+  response.send(html)
+})
+
 app.get('/api/persons', (request, response) => {
   response.json(persons)
 })

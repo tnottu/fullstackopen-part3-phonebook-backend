@@ -1,26 +1,9 @@
+require('dotenv').config()
 const mongoose = require('mongoose')
+const Person = require('./models/person')
 
-if (process.argv.length < 3) {
-  console.log('Please provide the password as an argument: node mongo.js <password>')
-  process.exit(1)
-}
-
-const password = process.argv[2]
-
-const name = process.argv[3]
-const number = process.argv[4]
-
-const url =
-  `mongodb+srv://fullstack:${password}@cluster0.jusrt.mongodb.net/phonebook-app?retryWrites=true`
-
-mongoose.connect(url, { useNewUrlParser: true, useUnifiedTopology: true, useFindAndModify: false, useCreateIndex: true })
-
-const personSchema = new mongoose.Schema({
-  name: String,
-  number: String,
-})
-
-const Person = mongoose.model('Person', personSchema)
+const name = process.argv[2]
+const number = process.argv[3]
 
 if ( name && number ) {
   const person = new Person({
@@ -41,4 +24,3 @@ if ( name && number ) {
     mongoose.connection.close()
   })
 }
-

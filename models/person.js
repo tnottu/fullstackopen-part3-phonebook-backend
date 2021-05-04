@@ -16,9 +16,21 @@ mongoose.connect(url, { useNewUrlParser: true, useUnifiedTopology: true, useFind
 const personSchema = new mongoose.Schema({
   name: {
     type: String,
+    minlength: 3,
     unique: true,
   },
-  number: String,
+  number: {
+    type: String,
+    validate: {
+      validator: (value) => {
+        // Remove non-numeric characters from string
+        const digits = value.replace(/\D/g, '');
+        return digits.length >= 8;
+      },
+      message: props => `${props.value} is not a valid phone number!`
+    },
+    required: [true, 'User phone number required'],
+  },
 })
 
 personSchema.plugin(uniqueValidator);

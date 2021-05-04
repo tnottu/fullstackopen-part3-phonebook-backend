@@ -1,5 +1,4 @@
 require('dotenv').config()
-const { request } = require('express')
 const express = require('express')
 const morgan = require('morgan')
 const cors = require('cors')
@@ -27,8 +26,8 @@ app.use(cors())
 app.use(express.json())
 app.use(express.static('build'))
 
-morgan.token('post-data', (req, res) => {
-  return req.method === 'POST' ? JSON.stringify(req.body) : '';
+morgan.token('post-data', (req) => {
+  return req.method === 'POST' ? JSON.stringify(req.body) : ''
 })
 
 app.use(morgan(':method :url :status :res[content-length] - :response-time ms :post-data'))
@@ -39,7 +38,7 @@ app.get('/', (request, response) => {
 
 app.get('/info', (request, response) => {
   Person.find({}).then(persons => {
-    let html = '';
+    let html = ''
     html += `<p>Phonebook has info for ${persons.length} people</p>`
     html += `<p>${new Date()}</p>`
     response.send(html)
@@ -113,7 +112,7 @@ app.put('/api/persons/:id', (request, response, next) => {
 
 app.delete('/api/persons/:id', (request, response, next) => {
   Person.findByIdAndRemove(request.params.id)
-    .then(result => {
+    .then(() => {
       response.status(204).end()
     })
     .catch(error => next(error))
